@@ -1,0 +1,68 @@
+GROUP MEMBERS:
+1)Akber Ali Amin	(k15-2262)
+2)Maria Naveed		(k16-3613)
+3)M.Hanif		(k15-2321)
+		
+%{
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+int key;
+int count;
+string str[25];
+int str_count;
+int int_count;
+int line_count;
+%}
+letter [A-Za-z]
+digit [0-9]
+strings [\"[^\"\n]*\"]
+line [\n]
+comments [/*]
+%%
+{line}  {line_count++;printf("Line %d", line_count); 
+"if"	{printf("Keyword"); key++;}
+"then"  {printf("keyword"; key++;}
+"else"	{printf("Keyword"); key++;}
+"true"  {printf("keyword"); key++;}
+"false" {printf("keyword"); key++;}
+"func"  {printf("keyword"); key++;}
+{letter}({letter}|{digit})* {printf("Identifier");count++;}
+"+"     {printf("Identifier");count++;}
+"-"     {printf("Identifier");count++;}
+"*"     {printf("Identifier");count++;}
+"/"     {printf("Identifier");count++;}
+"="     {printf("Identifier");count++;}
+">"     {printf("Identifier");count++;}
+">="     {printf("Identifier");count++;}
+"<"     {printf("Identifier");count++;}
+"<="     {printf("Identifier");count++;}
+"=="     {printf("Identifier");count++;}
+"!="     {printf("Identifier");count++;}
+{strings} {strncpy(str, &(yytext[1]), strlen(yytext)-2); str[strlen(yytext)-2] = (char) 0; printf("Quoted String");str_count++;}
+{comments} {skip_comment();}
+{-?([digit]+)} {printf("Integer Literal"); int_count++;
+"("       {printf("Left parenthesis");}
+")"       {printf("Right parenthesis");}
+","       {printf("Comma");}
+"::="     {printf("Assignment");}
+"{"       {printf("Left Brace");}
+"}"       {printf("Right brace");}
+";"       {printf("Semicolon");}
+""        {printf("End of input");}
+%%
+int main()
+{
+int val, total = 0, n = 0;
+bool arr[2]= {true, false};
+while (yylex()) {
+if(arr[0])
+{
+printf("number of identifiers = %d\nnumber of keyword = %d\,Total number of strings = %d\n, Total number of integers = %d\n", count, key, str_count, int_count);
+}
+else
+{
+printf("Invalid input on line %d", line_count);
+}
+return 0;
+}
